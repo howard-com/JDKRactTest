@@ -6,58 +6,60 @@ import java.util.concurrent.SubmissionPublisher;
 public class MyProcessor extends SubmissionPublisher<MyBean> implements Processor<MyBean, MyBean> {
 	private Subscription subscription;
 	
+	
 	@Override
 	public void subscribe(Subscriber subscriber) {
-		// ×¢²á¶©ÔÄÕß
-		System.out.println("´¦ÀíÆ÷×¢²áĞÂµÄ¶©ÔÄÕß");
+		// æ³¨å†Œè®¢é˜…è€…
+		System.out.println("å¤„ç†å™¨æ³¨å†Œæ–°çš„è®¢é˜…è€…");
 		super.subscribe(subscriber);
 	}	
 
 	@Override
 	public void onSubscribe(Subscription subscription) {
-		System.out.println("´¦ÀíÆ÷±»×¢²áµ½·¢²¼ÕßÉÏ");
-		// ±£´æ¶©ÔÄ¹ØÏµ, ĞèÒªÓÃËüÀ´¸ø·¢²¼ÕßÏìÓ¦
+		System.out.println("å¤„ç†å™¨è¢«æ³¨å†Œåˆ°å‘å¸ƒè€…ä¸Š");
+		// ä¿å­˜è®¢é˜…å…³ç³», éœ€è¦ç”¨å®ƒæ¥ç»™å‘å¸ƒè€…å“åº”
 		this.subscription = subscription;
 
-		// ÇëÇóÒ»¸öÊı¾İ
+		// è¯·æ±‚ä¸€ä¸ªæ•°æ®
 		this.subscription.request(1);
 	}
 
 	@Override
 	public void onNext(MyBean bean) {
-		// ½ÓÊÜµ½Ò»¸öÊı¾İ, ´¦Àí
+		// æ¥å—åˆ°ä¸€ä¸ªæ•°æ®, å¤„ç†
 		String input = bean.getName();
-		System.out.println("´¦ÀíÆ÷½ÓÊÜµ½Êı¾İ: " + input);
+		//System.out.println("å¤„ç†å™¨æ¥å—åˆ°æ•°æ®: " + input + " - è¿™æ˜¯æ­¤æ•°æ®ç¬¬" + ++bean.process_cnt + "æ¬¡è¢«å¤„ç†");
+		System.out.println("å¤„ç†å™¨æ¥å—åˆ°æ•°æ®: " + input);
 		
-		// ´óĞ¡Ğ´×ª»»
+		// å¤§å°å†™è½¬æ¢
 		String res = input.toUpperCase();
 		if (input == res) {
 			res = input.toLowerCase();
 		}
 		
-		bean.setName(res);
+		bean.setName("(" + FlowTest.main_cnt++ +")"+ res);
 		
-		// ×Ô¼º×÷Îª·¢²¼Õß£¬¼ÌĞø·¢²¼Êı¾İ
+		// è‡ªå·±ä½œä¸ºå‘å¸ƒè€…ï¼Œç»§ç»­å‘å¸ƒæ•°æ®
 		this.submit(bean);
 
-		// ´¦ÀíÍêµ÷ÓÃrequestÔÙÇëÇóÒ»¸öÊı¾İ
+		// å¤„ç†å®Œè°ƒç”¨requestå†è¯·æ±‚ä¸€ä¸ªæ•°æ®
 		this.subscription.request(1);
 	}
 
 	@Override
 	public void onError(Throwable throwable) {
-		// ³öÏÖÁËÒì³£(ÀıÈç´¦ÀíÊı¾İµÄÊ±ºò²úÉúÁËÒì³£)
+		// å‡ºç°äº†å¼‚å¸¸(ä¾‹å¦‚å¤„ç†æ•°æ®çš„æ—¶å€™äº§ç”Ÿäº†å¼‚å¸¸)
 		throwable.printStackTrace();
 
-		// ÎÒÃÇ¿ÉÒÔ¸æËß·¢²¼Õß, ºóÃæ²»½ÓÊÜÊı¾İÁË
+		// æˆ‘ä»¬å¯ä»¥å‘Šè¯‰å‘å¸ƒè€…, åé¢ä¸æ¥å—æ•°æ®äº†
 		this.subscription.cancel();
 	}
 
 	@Override
 	public void onComplete() {
-		// È«²¿Êı¾İ´¦ÀíÍêÁË(·¢²¼Õß¹Ø±ÕÁË)
-		System.out.println("´¦ÀíÆ÷´¦ÀíÍêÁË");
-        // ¹Ø±Õ·¢²¼Õß
+		// å…¨éƒ¨æ•°æ®å¤„ç†å®Œäº†(å‘å¸ƒè€…å…³é—­äº†)
+		System.out.println("å¤„ç†å™¨å¤„ç†å®Œäº†");
+        // å…³é—­å‘å¸ƒè€…
         this.close();
 	}
 }

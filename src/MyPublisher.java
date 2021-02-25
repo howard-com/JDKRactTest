@@ -4,8 +4,8 @@ import java.util.concurrent.Flow.Subscriber;
 public class MyPublisher<MyBean> extends SubmissionPublisher<MyBean> {
 	@Override
     public void subscribe(Subscriber subscriber) {
-		// ×¢²á¶©ÔÄÕß
-		System.out.println("·¢²¼Õß×¢²áĞÂµÄ¶©ÔÄÕß");
+		// æ³¨å†Œè®¢é˜…è€…
+		System.out.println("å‘å¸ƒè€…æ³¨å†Œæ–°çš„è®¢é˜…è€…");
 		super.subscribe(subscriber);
 	}	
 }

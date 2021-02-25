@@ -6,42 +6,43 @@ public class MySubscriber<T> implements Subscriber<MyBean> {
 
 	@Override
 	public void onSubscribe(Subscription subscription) {
-		System.out.println("¶©ÔÄÕß±»×¢²áµ½·¢²¼ÕßÉÏ");
+		System.out.println("è®¢é˜…è€…è¢«æ³¨å†Œåˆ°å‘å¸ƒè€…ä¸Š");
 
-		// ±£´æ¶©ÔÄ¹ØÏµ, ĞèÒªÓÃËüÀ´¸ø·¢²¼ÕßÏìÓ¦
+		// ä¿å­˜è®¢é˜…å…³ç³», éœ€è¦ç”¨å®ƒæ¥ç»™å‘å¸ƒè€…å“åº”
 		this.subscription = subscription;
 
-		// ÇëÇóÒ»¸öÊı¾İ
+		// è¯·æ±‚ä¸€ä¸ªæ•°æ®
 		this.subscription.request(1);
 	}
 
 	@Override
 	public void onNext(MyBean bean) {
-		// ½ÓÊÜµ½Ò»¸öÊı¾İ, ´¦Àí
+		// æ¥å—åˆ°ä¸€ä¸ªæ•°æ®, å¤„ç†
 		String input = bean.getName();
-		System.out.println("´¦ÀíÆ÷½ÓÊÜµ½Êı¾İ: " + input);
+		//System.out.println("è®¢é˜…è€…æ”¶åˆ°æ•°æ®: " + input + " - è¿™æ˜¯æ­¤æ•°æ®ç¬¬" + ++bean.subscriber_cnt + "æ¬¡è¢«å¤„ç†");
+		System.out.println("è®¢é˜…è€…æ”¶åˆ°æ•°æ®: " + input);
 
-		// ´óĞ¡Ğ´×ª»»
-		String res = (String) new StringBuffer("[").append(input).append("]").toString();
-		System.out.println("¶©ÔÄÕß´¦ÀíÊı¾İ: " + res);
+		// å¢åŠ æ‹¬å¼§
+		String res = (String) new StringBuffer("[").append(input).append("(" + FlowTest.main_cnt++ +")").append("]").toString();
+		//System.out.println("è®¢é˜…è€…å¤„ç†æ•°æ®: " + res);
 		bean.setName(res);
 		
-		// ´¦ÀíÍêµ÷ÓÃrequestÔÙÇëÇóÒ»¸öÊı¾İ
+		// å¤„ç†å®Œè°ƒç”¨requestå†è¯·æ±‚ä¸€ä¸ªæ•°æ®
 		this.subscription.request(1);
 	}
 
 	@Override
 	public void onError(Throwable throwable) {
-		// ³öÏÖÁËÒì³£(ÀıÈç´¦ÀíÊı¾İµÄÊ±ºò²úÉúÁËÒì³£)
+		// å‡ºç°äº†å¼‚å¸¸(ä¾‹å¦‚å¤„ç†æ•°æ®çš„æ—¶å€™äº§ç”Ÿäº†å¼‚å¸¸)
 		throwable.printStackTrace();
 
-		// ÎÒÃÇ¿ÉÒÔ¸æËß·¢²¼Õß, ºóÃæ²»½ÓÊÜÊı¾İÁË
+		// æˆ‘ä»¬å¯ä»¥å‘Šè¯‰å‘å¸ƒè€…, åé¢ä¸æ¥å—æ•°æ®äº†
 		this.subscription.cancel();
 	}
 
 	@Override
 	public void onComplete() {
-		// È«²¿Êı¾İ´¦ÀíÍêÁË(·¢²¼Õß¹Ø±ÕÁË)
-		System.out.println("¶©ÔÄÕß´¦ÀíÍêÁË");
+		// å…¨éƒ¨æ•°æ®å¤„ç†å®Œäº†(å‘å¸ƒè€…å…³é—­äº†)
+		System.out.println("è®¢é˜…è€…å¤„ç†å®Œäº†");
 	}
 }

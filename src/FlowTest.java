@@ -2,26 +2,27 @@ import java.util.ArrayList;
 import java.util.concurrent.SubmissionPublisher;
 
 public class FlowTest {
-
+	public static int main_cnt = 1;
+	
 	public static void main(String[] args) throws InterruptedException {
-		// 1.´´½¨×Ô¶¨Òå´´½¨·¢²¼Õß
+		
+		// 1.åˆ›å»ºè‡ªå®šä¹‰åˆ›å»ºå‘å¸ƒè€…
 		MyPublisher<MyBean> publiser = new MyPublisher<MyBean>();
 
-		// 2.´´½¨×Ô¶¨ÒåµÄ´¦ÀíÆ÷¡£
+		// 2.åˆ›å»ºè‡ªå®šä¹‰çš„å¤„ç†å™¨ã€‚
 		MyProcessor processor = new MyProcessor();
 
-		// 3.´´½¨×Ô¶¨ÒåµÄ¶©ÔÄÕß
-		MySubscriber<String> subscriber = new MySubscriber();
+		// 3.åˆ›å»ºè‡ªå®šä¹‰çš„è®¢é˜…è€…
+		MySubscriber<MyBean> subscriber = new MySubscriber<MyBean>();
 
-		// 4.½«¶©ÔÄÕß×¢²áµ½´¦ÀíÆ÷ÉÏ£¬ÔÙ½«´¦ÀíÆ÷×¢²áµ½·¢²¼ÕßÉÏ¡£
-		// ´¦ÀíÆ÷Ïàµ±ÓÚÒ»¸öÖĞ¼äÈË¡£µ±È»¶©ÔÄÕß¿ÉÒÔÖ±½Ó×¢²áµ½·¢²¼ÕßÉÏ¡£ÎŞĞè´¦ÀíÆ÷¡£
+		// 4.å°†è®¢é˜…è€…æ³¨å†Œåˆ°å¤„ç†å™¨ä¸Šï¼Œå†å°†å¤„ç†å™¨æ³¨å†Œåˆ°å‘å¸ƒè€…ä¸Šã€‚
+		// å¤„ç†å™¨ç›¸å½“äºä¸€ä¸ªä¸­é—´äººã€‚å½“ç„¶è®¢é˜…è€…å¯ä»¥ç›´æ¥æ³¨å†Œåˆ°å‘å¸ƒè€…ä¸Šã€‚æ— éœ€å¤„ç†å™¨ã€‚
 		processor.subscribe(subscriber);
 		publiser.subscribe(processor);
-//      publiser.subscribe(subscriber);
 
-		// 6. Éú²úÊı¾İ, ²¢·¢²¼
+		// 5. ç”Ÿäº§æ•°æ®, å¹¶å‘å¸ƒ
 		String[] input = { "A", "B", "C", "x", "y", "z" };
-		ArrayList<MyBean> beanList = new ArrayList();
+		ArrayList<MyBean> beanList = new ArrayList<MyBean>();
 
 		for (String i : input) {
 			MyBean bean = new MyBean();
@@ -30,13 +31,23 @@ public class FlowTest {
 			publiser.submit(bean);
 		}
 
-		// 7. ½áÊøºó ¹Ø±Õ·¢²¼Õß
+		// ä¸»çº¿ç¨‹å»¶è¿Ÿç­‰å¾…, å¦åˆ™é›†åˆå†…çš„æ•°æ®å¯èƒ½æ²¡æœ‰è¢«å¤„ç†å®Œå°±è¢«è¾“å‡º
+//		Thread.currentThread().join(1000);
+//		
+//		// 6. å†æ¬¡å‘å¸ƒæ•°æ®
+//		for (MyBean bean : beanList) {
+//			bean.setName(bean.getName().concat(" *"));
+//			publiser.submit(bean);
+//		}
+	
+		// 7. ç»“æŸå å…³é—­å‘å¸ƒè€…
 		publiser.close();
-		// Ö÷Ïß³ÌÑÓ³ÙÍ£Ö¹, ·ñÔòÊı¾İÃ»ÓĞÏû·Ñ¾ÍÍË³ö
-		Thread.currentThread().join(1000);
 
-		for (int i = 0; i < input.length; i++) {
-			System.out.println(beanList.get(i).getName());
+		// ä¸»çº¿ç¨‹å»¶è¿Ÿç­‰å¾…, å¦åˆ™é›†åˆå†…çš„æ•°æ®å¯èƒ½æ²¡æœ‰è¢«å¤„ç†å®Œå°±è¢«è¾“å‡º
+		Thread.currentThread().join(1000);
+		System.out.println("é›†åˆå†…çš„æ•°æ®æ˜¯ï¼š");
+		for (MyBean bean : beanList) {
+			System.out.println(bean.getName());
 		}
 	}
 }
