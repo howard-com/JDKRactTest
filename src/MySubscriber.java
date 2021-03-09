@@ -23,8 +23,14 @@ public class MySubscriber<T> implements Subscriber<MyBean> {
 		System.out.println("订阅者收到数据: " + input);
 
 		// 增加括弧
-		String res = (String) new StringBuffer("[").append(input).append("(" + FlowTest.main_cnt++ +")").append("]").toString();
-		//System.out.println("订阅者处理数据: " + res);
+		String res;
+		if (FlowTest.showSeq) {
+			// 为了测试处理顺序，添加序号
+			res = (String) new StringBuffer("[").append(input).append("(" + FlowTest.main_cnt++ +")").append("]").toString(); 
+		} else {
+			res = (String) new StringBuffer("[").append(input).append("]").toString();
+		}
+		//System.out.println("订阅者生成数据: " + res);
 		bean.setName(res);
 		
 		// 处理完调用request再请求一个数据

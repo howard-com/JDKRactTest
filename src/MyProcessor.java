@@ -30,14 +30,18 @@ public class MyProcessor extends SubmissionPublisher<MyBean> implements Processo
 		String input = bean.getName();
 		//System.out.println("处理器接受到数据: " + input + " - 这是此数据第" + ++bean.process_cnt + "次被处理");
 		System.out.println("处理器接受到数据: " + input);
-		
 		// 大小写转换
 		String res = input.toUpperCase();
 		if (input == res) {
 			res = input.toLowerCase();
 		}
 		
-		bean.setName("(" + FlowTest.main_cnt++ +")"+ res);
+		if (FlowTest.showSeq) {
+			// 为了测试处理顺序，添加序号
+			bean.setName("(" + FlowTest.main_cnt++ +")"+ res); 
+		} else {
+			bean.setName(res);
+		}
 		
 		// 自己作为发布者，继续发布数据
 		this.submit(bean);

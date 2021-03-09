@@ -3,6 +3,7 @@ import java.util.concurrent.SubmissionPublisher;
 
 public class FlowTest {
 	public static int main_cnt = 1;
+	public static boolean showSeq = false;
 	
 	public static void main(String[] args) throws InterruptedException {
 		
@@ -36,7 +37,7 @@ public class FlowTest {
 //		
 //		// 6. 再次发布数据
 //		for (MyBean bean : beanList) {
-//			bean.setName(bean.getName().concat(" *"));
+//			bean.setName(bean.getName().concat("*"));
 //			publiser.submit(bean);
 //		}
 	

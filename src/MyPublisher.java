@@ -7,5 +7,5 @@ public class MyPublisher<MyBean> extends SubmissionPublisher<MyBean> {
 		// 注册订阅者
 		System.out.println("发布者注册新的订阅者");
 		super.subscribe(subscriber);
-	}	
+	}
 }
